@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SUDOKU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Josefin+Sans:wght@300;400;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ══ Theme Toggle ══ -->
+<button class="theme-toggle" id="theme-toggle" title="Toggle light / dark mode" aria-label="Toggle theme">
+  <div class="toggle-track">
+    <div class="toggle-thumb" id="toggle-thumb">🌙</div>
+  </div>
+</button>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║  SCREEN 1 — LANDING                      ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="screen-landing" class="screen active">
+  <div class="landing-deco" aria-hidden="true">
+    <span class="deco-num" style="top:5%;left:-3%">9</span>
+    <span class="deco-num" style="top:55%;right:-2%">3</span>
+    <span class="deco-num" style="bottom:8%;left:8%">7</span>
+  </div>
+  <div class="landing-inner">
+    <div class="landing-badge">The Classic Puzzle Game</div>
+    <h1 class="landing-title">SUDOKU</h1>
+    <p class="landing-subtitle">Logic · Patience · Precision</p>
+    <button class="landing-btn" onclick="goTo('screen-level')">
+      Play Now &nbsp;→
+    </button>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║  SCREEN 2 — CHOOSE LEVEL                 ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="screen-level" class="screen choice-screen">
+  <div class="choice-wrapper">
+    <div class="choice-eyebrow">Step 1 of 2</div>
+    <h2 class="choice-title">Choose Difficulty</h2>
+    <p class="choice-desc">How sharp are you feeling today?</p>
+    <div class="choice-cards">
+      <div class="choice-card" onclick="selectLevel('easy')" data-level="easy">
+        <div class="card-icon">🌿</div>
+        <span class="card-label">Easy</span>
+        <span class="card-sub">~35 clues</span>
+      </div>
+      <div class="choice-card" onclick="selectLevel('medium')" data-level="medium">
+        <div class="card-icon">⚡</div>
+        <span class="card-label">Medium</span>
+        <span class="card-sub">~30 clues</span>
+      </div>
+      <div class="choice-card" onclick="selectLevel('hard')" data-level="hard">
+        <div class="card-icon">🔥</div>
+        <span class="card-label">Hard</span>
+        <span class="card-sub">~26 clues</span>
+      </div>
+    </div>
+    <button class="choice-back" onclick="goTo('screen-landing')">← Back</button>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║  SCREEN 3 — CHOOSE SIZE                  ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="screen-size" class="screen choice-screen">
+  <div class="choice-wrapper">
+    <div class="choice-eyebrow">Step 2 of 2</div>
+    <h2 class="choice-title">Choose Grid Size</h2>
+    <p class="choice-desc">Pick your board</p>
+    <div class="choice-cards">
+      <div class="choice-card" onclick="selectSize(3)" data-size="3">
+        <div class="card-icon">◻️</div>
+        <span class="card-label">3 × 3</span>
+        <span class="card-sub">Quick play</span>
+      </div>
+      <div class="choice-card" onclick="selectSize(9)" data-size="9">
+        <div class="card-icon">⊞</div>
+        <span class="card-label">9 × 9</span>
+        <span class="card-sub">Classic board</span>
+      </div>
+    </div>
+    <button class="choice-back" onclick="goTo('screen-level')">← Back</button>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║  SCREEN 4 — GAME                         ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="screen-game" class="screen">
+
+  <!-- Top bar -->
+  <div class="game-topbar">
+    <div class="topbar-left">
+      <button class="topbar-back-btn" onclick="goTo('screen-level')" title="Change setup">
+        ← Back
+      </button>
+      <div class="topbar-logo">SUDOKU</div>
+    </div>
+    <div class="topbar-meta">
+      <span class="badge-diff" id="badge-diff">EASY</span>
+      <span class="badge-size" id="badge-size">9×9</span>
+    </div>
+    <div class="timer-display" id="timer-display">00:00</div>
+  </div>
+
+  <!-- Game body -->
+  <div class="game-body">
+
+    <!-- Grid + Numpad stacked -->
+    <div class="grid-container">
+      <div id="sudoku-grid" class="sudoku-grid size-9"></div>
+      <!-- Number Pad — sits directly under the matrix -->
+      <div class="numpad" id="numpad-box">
+        <div class="panel-label">Number Pad</div>
+        <div class="numpad-grid" id="numpad"></div>
+      </div>
+    </div>
+
+    <!-- Side panel -->
+    <div class="side-panel">
+
+      <!-- Timeline -->
+      <div class="timeline-box">
+        <div class="panel-label">Timeline</div>
+        <div class="timeline-bar-track">
+          <div class="timeline-bar-fill" id="timeline-fill"></div>
+        </div>
+        <div class="timeline-numbers">
+          <span id="tl-elapsed">00:00</span>
+          <span id="tl-limit">—</span>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-box">
+        <div class="panel-label">Stats</div>
+        <div class="stat-row"><span>Played</span><span id="stat-played">0</span></div>
+        <div class="stat-row"><span>Completed</span><span id="stat-completed">0</span></div>
+        <div class="stat-row"><span>Win Rate</span><span id="stat-winrate">—</span></div>
+        <div class="stat-row"><span>Best Time</span><span id="stat-best">—</span></div>
+        <div class="stat-row"><span>Avg Time</span><span id="stat-avg">—</span></div>
+      </div>
+
+      <!-- Actions -->
+      <div class="btn-group">
+        <button class="btn gold" id="btn-new">New Game</button>
+        <button class="btn" id="btn-reset">Reset Puzzle</button>
+        <button class="btn" id="btn-undo">↩ Undo</button>
+        <button class="btn" id="btn-pencil">✏ Notes Mode</button>
+        <button class="btn" id="btn-hint">💡 Hint <span id="hint-left">(3)</span></button>
+        <button class="btn" id="btn-check">✓ Check Board</button>
+        <button class="btn danger" id="btn-reveal">Reveal Solution</button>
+        <button class="btn danger" id="btn-clearall">✕ Clear All</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ Completion overlay ═══ -->
+<div id="overlay-complete">
+  <div class="complete-card">
+    <div class="complete-icon">🏆</div>
+    <div class="complete-title">Solved!</div>
+    <div class="complete-sub">Puzzle Complete</div>
+    <div class="complete-time" id="complete-time">00:00</div>
+    <div class="complete-info" id="complete-info"></div>
+    <div class="complete-actions">
+      <button class="btn gold" onclick="Game.newGame(); closeComplete();">Play Again</button>
+      <button class="btn" onclick="goTo('screen-level'); closeComplete();">Menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confetti layer -->
+<div id="confetti-layer"></div>
+
+<!-- Footer -->
+<footer>a basic project</footer>
+
+<!-- Scripts — order matters: engine before game -->
+<script src="js/engine.js"></script>
+<script src="js/game.js"></script>
+
+</body>
+</html>
