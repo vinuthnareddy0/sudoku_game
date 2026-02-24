@@ -17,21 +17,9 @@ sudoku-game/
 └── LICENSE
 ```
 
-## How to Run
 
-Open `index.html` directly in any browser, or use Live Server in VS Code.
+Open https://sudokugame0.netlify.app/
 
-```bash
-# Optional local server
-python3 -m http.server 8080
-# then visit http://localhost:8080
-```
-
-## Deploy to GitHub Pages
-
-1. Push this folder to a GitHub repo
-2. Settings → Pages → Source: `main` branch, `/` root
-3. Live at `https://YOUR_USERNAME.github.io/REPO_NAME/`
 
 ## Features
 - Landing page → pick difficulty → pick grid size → play
